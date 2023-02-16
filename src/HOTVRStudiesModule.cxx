@@ -126,6 +126,7 @@ void HOTVRStudiesModule::fill_histograms(uhh2::Event& event,TopJet jet, TopJet p
   else if(pt_jet.pt()>600 &&pt_jet.pt()<800) HFolder("hist_"+jet_coll+"_jets"+particle+selection+"_600")->fill_topjet(event,jet);
   else if(pt_jet.pt()>800 &&pt_jet.pt()<1000) HFolder("hist_"+jet_coll+"_jets"+particle+selection+"_800")->fill_topjet(event,jet);
   else if(pt_jet.pt()>1000 &&pt_jet.pt()<1200) HFolder("hist_"+jet_coll+"_jets"+particle+selection+"_1000")->fill_topjet(event,jet);
+  else if(pt_jet.pt()>1200 ) HFolder("hist_"+jet_coll+"_jets"+particle+selection+"_1200")->fill_topjet(event,jet);
 }
 
 
@@ -168,7 +169,7 @@ HOTVRStudiesModule::HOTVRStudiesModule(Context & ctx){
   h_matched_pairs = ctx.get_handle<vector<pair<TopJet, TopJet>>>("matched_pairs");
   */
   // Set up Hists classes:
-  pTs = {"200","400", "600","800","1000"};
+  pTs = {"200","400", "600","800","1000","1200"};
   particles = {"top","W","Z","H"};
   selections = {"_Nsub3","_fpt","_mass"};
 
@@ -211,7 +212,7 @@ HOTVRStudiesModule::HOTVRStudiesModule(Context & ctx){
   double top_pt_min = 0.0;
   double top_eta_max = 100000;
   TopJetId id_topjet =  PtEtaCut(top_pt_min, top_eta_max);
-  TopJetId id_hotvr = AndId<TopJet>(id_topjet, Tau32Groomed(0.47));  // definition of hotvr id (HOTVR SD WP 0.47)
+  // TopJetId id_hotvr = AndId<TopJet>(id_topjet, Tau32Groomed(0.47));  // definition of hotvr id (HOTVR SD WP 0.47)
 
   // for (int i = 0; i < n_points; ++i) //loop over working points and create hists
   // {
