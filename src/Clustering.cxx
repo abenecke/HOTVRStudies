@@ -70,7 +70,7 @@ void Clustering::cluster_HOTVR_jets(vector<PseudoJet> pseudojets)
   AreaDefinition area_def(active_area_explicit_ghosts, GhostedAreaSpec(ghost_maxrap));
   _clust_seq_area = new ClusterSequenceArea(pseudojets, jet_def, area_def);
   _hotvr_jets=hotvr_plugin.get_jets(); //HOTVR Clustering
-//  std::vector<PseudoJet> rejected_jets=hotvr_plugin.get_rejected_cluster(); // get the rejected clusters below the pt threshold (CLUSTER)
+ std::vector<PseudoJet> rejected_jets=hotvr_plugin.get_rejected_cluster(); // get the rejected clusters below the pt threshold (CLUSTER)
 //  std::vector<PseudoJet> soft_jets=hotvr_plugin.get_soft_cluster(); // removed via Soft Drop Condition (NOVETO)
 
 // std::cout << "---------We are in HOTVR MJ clustering!-------------" << '\n';
@@ -178,21 +178,21 @@ void Clustering::cluster_HOTVR_SD_jets(vector<PseudoJet> pseudojets, int nevent)
     history_file.close();
   }
 
-  //  _rejected_cluster=hotvr_plugin.get_rejected_cluster(); // get the rejected clusters below the pt threshold (CLUSTER)
-  //  _rejected_cluster_constituents = save_constituents(_rejected_cluster);
+  _rejected_cluster=hotvr_plugin.get_rejected_cluster(); // get the rejected clusters below the pt threshold (CLUSTER)
+  _rejected_cluster_constituents = save_constituents(_rejected_cluster);
   // //
   //  _soft_cluster=hotvr_plugin.get_soft_cluster(); // removed via Soft Drop Condition (NOVETO)
   //  _soft_cluster_constituents = save_constituents(_soft_cluster);
   // //
-  //  _rejected_subjets=hotvr_plugin.get_rejected_subjets(); // get the rejected subjets with ptsub
-  //  _rejected_subjets_constituents = save_constituents(_rejected_subjets);
+  _rejected_subjets=hotvr_plugin.get_rejected_subjets(); // get the rejected subjets with ptsub
+  _rejected_subjets_constituents = save_constituents(_rejected_subjets);
 
   // convert rejected subjets into UHH2  jets
-//  _top_rejected_subjets=convert_subjets(_rejected_subjets);
+  _top_rejected_subjets=convert_subjets(_rejected_subjets);
   // convert rejected jets into topjets
-  // for (size_t j = 0; j < _rejected_cluster.size(); j++) {
-  //   _top_rejected_cluster.push_back(convert_jet(_rejected_cluster[j]));
-  // }
+  for (size_t j = 0; j < _rejected_cluster.size(); j++) {
+    _top_rejected_cluster.push_back(convert_jet(_rejected_cluster[j]));
+  }
   // // convert soft jets into topjets
   // for (size_t j = 0; j < _soft_cluster.size(); j++) {
   //   _top_soft_cluster.push_back(convert_jet(_soft_cluster[j]));

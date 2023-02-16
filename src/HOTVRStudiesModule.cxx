@@ -92,6 +92,7 @@ private:
 
   // vectors of jets (TopJets)
   vector<TopJet> hotvr_jets;
+  vector<TopJet> rejected_cluster_jets;
   vector<TopJet> parton_jets;
 
   //vector<Jet> _rejected_subjets; // rejected subjets with ptsub
@@ -172,6 +173,8 @@ HOTVRStudiesModule::HOTVRStudiesModule(Context & ctx){
   pTs = {"200","400", "600","800","1000","1200"};
   particles = {"top","W","Z","H"};
   selections = {"_Nsub3","_fpt","_mass"};
+
+  book_histograms(ctx, "rejected_cluster", pTs, is_qcd, "");
 
   book_histograms(ctx, "hotvr", pTs, is_qcd, "");
 
@@ -296,6 +299,7 @@ bool HOTVRStudiesModule::process(Event & event)
   }
   clustering->cluster_jets(pj_stable_parts); // cluster the stable particles (as class pseudojets), possible modes defined in hotvr.config: "HOTVR, HOTVR_SD, VR"
   hotvr_jets = clustering->get_top_hotvr_jets();
+  rejected_cluster_jets = clustering->get_rejected_cluster_jets();
   //hotvr_jets_constituents = clustering->get_hotvr_jet_constituents();
 
   // cluster and get the clustered parton jets (AK10 jets)
@@ -327,6 +331,12 @@ bool HOTVRStudiesModule::process(Event & event)
 
   // top tagger for selection
   toptagger = new TopTagger();
+
+  /// plotting rejected_cluster
+  for(uint j=0; j<rejected_cluster_jets.size(); ++j){ 
+    TopJet jet = rejected_cluster_jets[j];
+    fill_histograms(event, jet, jet, "rejected_cluster","");
+  }
 
   for(uint j=0; j<hotvr_jets.size(); ++j){ // loop over hotvr jets
     //std::cout << "Jet pt "<<jet.pt() << '\n';

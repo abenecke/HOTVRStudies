@@ -105,6 +105,7 @@ std::vector<std::vector<fastjet::PseudoJet>> get_hotvr_jet_constituents(){return
   std::vector<TopJet> get_top_hotvr_jets(){return _top_hotvr_jets;};
   std::vector<TopJet> get_top_vr_jets(){return _top_vr_jets;};
   std::vector<TopJet> get_parton_jets(){return _parton_jets;};
+  std::vector<TopJet> get_rejected_cluster_jets(){return _top_rejected_cluster;};
 
 
 // Getter for rejected jets or subjets or soft jets
