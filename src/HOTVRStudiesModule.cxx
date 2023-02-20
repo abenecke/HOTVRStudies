@@ -203,8 +203,9 @@ HOTVRStudiesModule::HOTVRStudiesModule(Context & ctx){
 
   for (auto particle:particles){
     book_histograms(ctx, "hotvr", pTs, is_qcd, "_mass","_"+particle);
-    book_histograms(ctx, "tagged", pTs, is_qcd, "","_"+particle);  // not yet filled since matching needs to be implemented for W, H, Z
-    book_histograms(ctx, "tagged", pTs, is_qcd, "_tau21","_"+particle);  // not yet filled since matching needs to be implemented for W, H, Z
+    book_histograms(ctx, "tagged", pTs, is_qcd, "","_"+particle); 
+    book_histograms(ctx, "tagged", pTs, is_qcd, "_mass","_"+particle); 
+    book_histograms(ctx, "tagged", pTs, is_qcd, "_tau21","_"+particle);
 
   }
 
@@ -435,7 +436,9 @@ bool HOTVRStudiesModule::process(Event & event)
 	  // fill hists with tagged jets
 	  double tau21 = matched_jet.tau2_groomed()/matched_jet.tau1_groomed();
 	  
-	  fill_histograms(event, matched_jet, parton_jet, "tagged","","_"+particle);
+	  fill_histograms(event, matched_jet, parton_jet, "tagged","_mass","_"+particle);
+	  int nsubjets=matched_jet.subjets().size();
+	  if(nsubjets>1) fill_histograms(event, matched_jet, parton_jet, "tagged","","_"+particle);
 	  if(tau21<0.4) fill_histograms(event, matched_jet, parton_jet, "tagged","_tau21","_"+particle);
 	}
       }
